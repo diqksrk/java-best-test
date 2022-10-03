@@ -2,6 +2,16 @@ package com.example.javatest;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.AggregateWith;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.aggregator.ArgumentsAggregationException;
+import org.junit.jupiter.params.aggregator.ArgumentsAggregator;
+import org.junit.jupiter.params.converter.ArgumentConversionException;
+import org.junit.jupiter.params.converter.ConvertWith;
+import org.junit.jupiter.params.converter.SimpleArgumentConverter;
+import org.junit.jupiter.params.provider.*;
 
 import java.time.Duration;
 
@@ -83,11 +93,73 @@ class JavatestApplicationTests {
         System.out.println(test_env);
     }
 
-    // 3번째.
+    // 4번째.
     @SlowTest
     void create_new_javatest4_2() {
         String test_env = System.getenv("TEST_ENV");
         System.out.println(test_env);
+    }
+
+    @DisplayName("자바테스트 만들기")
+    @RepeatedTest(value = 10, name = "{displayName}, {currentRepetition}/{totalRepetitions}")
+    void repeat_test(RepetitionInfo repetitionInfo) {
+        System.out.println("test" + repetitionInfo.getCurrentRepetition() + "/" + repetitionInfo.getTotalRepetitions());
+    }
+
+    @DisplayName("자바파라미터 만들기")
+    @ParameterizedTest(name = "{index} {displayName} message={0}")
+    @ValueSource(strings = {"날씨가", "많이", "춰워지고", "있네요"})
+    @NullAndEmptySource
+    void parameterized_test(String message) {
+        System.out.println(message);
+    }
+
+    @DisplayName("자바파라미터 만들기")
+    @ParameterizedTest(name = "{index} {displayName} message={0}")
+    @ValueSource(strings = {"날씨가", "많이", "춰워지고", "있네요"})
+    void csvSoruce_test(@ConvertWith(StudyConverter.class) Study study) {
+        System.out.println(study.getLimit());
+    }
+
+    @DisplayName("자바파라미터3 만들기")
+    @ParameterizedTest(name = "{index} {displayName} message={0}")
+    @CsvSource({"10, '자바 스터디'", "20, 스프링"})
+    void csvSoruce_test2(Integer limit, String name) {
+        Study study = new Study(limit, name);
+        System.out.println(study.getLimit());
+    }
+
+    // 아규먼트 조합
+    @DisplayName("자바파라미터3 만들기")
+    @ParameterizedTest(name = "{index} {displayName} message={0}")
+    @CsvSource({"10, '자바 스터디'", "20, 스프링"})
+    void csvSoruce_test3(ArgumentsAccessor argumentsAccessor) {
+        Study study = new Study(argumentsAccessor.getInteger(0), argumentsAccessor.getString(1));
+        System.out.println(study.getLimit());
+    }
+
+    // 아규먼트 조합
+    @DisplayName("자바파라미터3 만들기")
+    @ParameterizedTest(name = "{index} {displayName} message={0}")
+    @CsvSource({"10, '자바 스터디'", "20, 스프링"})
+    void csvSoruce_test5(@AggregateWith(StudyAggregator.class) Study study) {
+        System.out.println(study.getLimit());
+    }
+
+    static class StudyAggregator implements ArgumentsAggregator {
+        @Override
+        public Object aggregateArguments(ArgumentsAccessor argumentsAccessor, ParameterContext parameterContext) throws ArgumentsAggregationException {
+            return new Study(argumentsAccessor.getInteger(0), argumentsAccessor.getString(1));
+        }
+    }
+
+    // 하나의 아규먼트를 다른 타입으로 적용할때 변화되는 것.
+    static class StudyConverter extends SimpleArgumentConverter {
+        @Override
+        protected Object convert(Object source, Class<?> targetType) throws ArgumentConversionException {
+            assertEquals(Study.class, targetType, "Can only convert to Study");
+            return new Study(Integer.parseInt(source.toString()));
+        }
     }
 
     @BeforeAll

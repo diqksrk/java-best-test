@@ -31,3 +31,13 @@ DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class) - undersocr
 4.2) target - 누구한테 적용할지를 묻는 키워드로, 메소드에만 적용하고 싶다면 ElementType.Method로 칭한다.
 4.3) Retention - 언제까지 해당 어노테이션을 적용할지 묻는 키워드로, 런타임에도 적용하고 싶다면 RetentionPolicy.Runtime이라 칭한다.
 4.4) @Test, @Tag 어노테이션까지 붙인후, 커스텀 에노테이션을 적용한다.
+
+5) test 반복하기
+5.1) @RepeatedTest - 테스트를 반복하고 싶을때, 사용하는 어노테이션이다.
+ 속성으로는 name, value가 존재하며, value는 몇번 반복할지, name은 해당 테스트 메소드의 이름을 뭘로 할지를 정할수가 있다.
+5.2) @ParameterizedTest - 반복되는 변수들을 하나의 메소드 안에서 통합하고자 할때 사용하는 메소드이다.
+5.3) @ValueSource - 반복되는 변수들을 밸류를 넣을때 사용하는 어노테이션이다.
+5.4) @NullAndEmptySource - 널값이나 빈값을 넣어주고자 할때 사용하는 어노테이션이다.
+5.5) @CsvSource - 2개 이상의 변수를 테스트 할때 사용하는 어노테이션이다.
+5.6) @ConvertWith - 위에서 테스트를 할때, Converter를 만드는데, 해당 Converter를 적용하고자 할때 사용하는 어노테이션이다.
+5.7) @AggregateWith - 2개 이상의 변수를 테스트할때, 사용하는 어노테이션이다. 1개일 경우 Converterwith이다.
