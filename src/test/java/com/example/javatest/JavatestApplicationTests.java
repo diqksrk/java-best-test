@@ -55,10 +55,25 @@ class JavatestApplicationTests {
         });
     }
 
+    // 3번째.
     @Test
-    @Disabled
-    void disable_new_javatest() {
-        System.out.println("disabled");
+    @DisplayName("자바테스트 어플리케이션2 만들기")
+    // 태그를 붙여서 상세설명을 알려준다. - edit Configuration에서 tags를 설정해서 특정 tag붙인 애만 실행 할수 있다.
+    @Tag("fast")
+    void create_new_javatest3() {
+        String test_env = System.getenv("TEST_ENV");
+        System.out.println(test_env);
+    }
+
+    // 3번째.
+    @Test
+    @DisplayName("자바테스트 어플리케이션2 만들기")
+    @Tag("slow")
+    // 태그를 붙여서 상세설명을 알려준다.
+    @Tag("fast")
+    void create_new_javatest4() {
+        String test_env = System.getenv("TEST_ENV");
+        System.out.println(test_env);
     }
 
     @BeforeAll
