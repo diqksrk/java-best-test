@@ -76,6 +76,20 @@ class JavatestApplicationTests {
         System.out.println(test_env);
     }
 
+    // 4번째.
+    @FastTest
+    void create_new_javatest4_1() {
+        String test_env = System.getenv("TEST_ENV");
+        System.out.println(test_env);
+    }
+
+    // 3번째.
+    @SlowTest
+    void create_new_javatest4_2() {
+        String test_env = System.getenv("TEST_ENV");
+        System.out.println(test_env);
+    }
+
     @BeforeAll
     static void beforeAll() {
         System.out.println("before all");

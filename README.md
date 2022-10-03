@@ -25,3 +25,9 @@ DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class) - undersocr
 3.2) 위에 붙여진 Tag를 이용하여, edit configuration에서 tags에 설정값을 넣어 해당 어노테이션만 붙은 메소드만 실행시키는 환경을 만들수 있다.
 3.3) 로컬 환경에서 돌리는 테스트와, CI환경에서 돌리는 테스트를 다르게 하고 싶다면, pom.xml설정파일에서 profiles에 설정값을 주어 설정할수 있다.
 3.4) 돌릴때는 -p 옵션을 줘서 설정할수 있다. ex) ./mvnw test -P ci
+
+4) test Custom tag
+4.1) annotation interface를 만든 후, 해당 어노테이션에 해당 어노테이션을 붙인다.
+4.2) target - 누구한테 적용할지를 묻는 키워드로, 메소드에만 적용하고 싶다면 ElementType.Method로 칭한다.
+4.3) Retention - 언제까지 해당 어노테이션을 적용할지 묻는 키워드로, 런타임에도 적용하고 싶다면 RetentionPolicy.Runtime이라 칭한다.
+4.4) @Test, @Tag 어노테이션까지 붙인후, 커스텀 에노테이션을 적용한다.
